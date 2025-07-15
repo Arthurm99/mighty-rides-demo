@@ -308,45 +308,52 @@ export default function Book() {
 
   // Cargar Google Maps
   useEffect(() => {
-    if (window.google && window.google.maps && window.google.maps.places) {
-      setIsGoogleLoaded(true);
-      return;
-    }
-
-    if (!GOOGLE_MAPS_API_KEY || GOOGLE_MAPS_API_KEY === 'AIzaSyAoS15xiN1TTWmkeT-oz95e7kmULnbt_cE') {
-      console.error('⚠️ Google Maps API Key not configured!');
-      setQuotaWarning(true);
-      return;
-    }
-
-const existingScript = document.querySelector(`script[src*="maps.googleapis.com"]`);
-    if (existingScript) {
-      // Verificar inmediatamente si Google ya está disponible
-      if (window.google && window.google.maps && window.google.maps.places) {
-        setIsGoogleLoaded(true);
-        return;
-      }
+    console.log('🔍 Google Maps useEffect iniciado');
+    
+    // Verificación agresiva cada 100ms
+    const quickCheck = setInterval(() => {
+      console.log('🔍 Verificando Google Maps...', {
+        google: !!window.google,
+        maps: !!(window.google && window.google.maps),
+        places: !!(window.google && window.google.maps && window.google.maps.places)
+      });
       
-      // Si no está listo, esperar con intervalo
-      const checkInterval = setInterval(() => {
-        if (window.google && window.google.maps && window.google.maps.places) {
-          setIsGoogleLoaded(true);
-          clearInterval(checkInterval);
-        }
-      }, 500);
-      return () => clearInterval(checkInterval);
-    }
-
-    const script = document.createElement('script');
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&libraries=places&loading=async`;
-    script.async = true;
-    script.onload = () => {
       if (window.google && window.google.maps && window.google.maps.places) {
+        console.log('✅ Google Maps listo!');
         setIsGoogleLoaded(true);
+        clearInterval(quickCheck);
       }
+    }, 100);
+    
+    // Cargar script si no existe
+    const existingScript = document.querySelector(`script[src*="maps.googleapis.com"]`);
+    if (!existingScript && GOOGLE_MAPS_API_KEY && GOOGLE_MAPS_API_KEY !== 'TU_API_KEY_AQUI') {
+      console.log('📥 Cargando Google Maps script...');
+      const script = document.createElement('script');
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&libraries=places&loading=async`;
+      script.async = true;
+      script.onload = () => {
+        console.log('📦 Google Maps script cargado');
+      };
+      script.onerror = () => {
+        console.error('❌ Error cargando Google Maps');
+        setQuotaWarning(true);
+      };
+      document.head.appendChild(script);
+    }
+    
+    // Timeout de seguridad - forzar después de 10 segundos
+    const forceTimeout = setTimeout(() => {
+      console.log('⚠️ Timeout Google Maps - habilitando campos de todos modos');
+      clearInterval(quickCheck);
+      setIsGoogleLoaded(true);
+    }, 10000);
+    
+    // Cleanup
+    return () => {
+      clearInterval(quickCheck);
+      clearTimeout(forceTimeout);
     };
-    script.onerror = () => setQuotaWarning(true);
-    document.head.appendChild(script);
   }, []);
 
   // Inicializar Autocomplete
