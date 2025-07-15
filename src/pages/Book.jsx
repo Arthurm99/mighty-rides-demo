@@ -11,15 +11,15 @@ export default function Book() {
   const driverDatabase = {
     'DRIVER_001': {
       id: 'DRIVER_001',
-      name: 'Carlos Rodriguez',
+      name: 'Victor',
       photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face',
       rating: 4.9,
       totalRides: 1247,
       vehicle: {
-        make: 'Toyota',
-        model: 'Camry',
-        year: 2022,
-        color: 'Silver',
+        make: 'Crysler',
+        model: 'Pacífica',
+        year: 2017,
+        color: 'Black',
         plate: 'ABC-123'
       },
       backupDriverId: 'DRIVER_002',
@@ -28,18 +28,18 @@ export default function Book() {
     },
     'DRIVER_002': {
       id: 'DRIVER_002', 
-      name: 'Maria Lopez',
+      name: 'Arturo',
       photo: 'https://images.unsplash.com/photo-1494790108755-2616b612b5bb?w=150&h=150&fit=crop&crop=face',
       rating: 4.8,
       totalRides: 892,
       vehicle: {
-        make: 'Honda',
-        model: 'Accord',
-        year: 2021,
-        color: 'Black',
+        make: 'Kia',
+        model: 'Sedona',
+        year: 2018,
+        color: 'Brown',
         plate: 'XYZ-789'
       },
-      backupDriverId: 'DRIVER_003',
+      backupDriverId: 'DRIVER_001',
       available: true,
       languages: ['English', 'Spanish']
     },
