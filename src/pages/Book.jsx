@@ -313,7 +313,7 @@ export default function Book() {
       return;
     }
 
-    if (!GOOGLE_MAPS_API_KEY || GOOGLE_MAPS_API_KEY === 'TU_API_KEY_AQUI') {
+    if (!GOOGLE_MAPS_API_KEY || GOOGLE_MAPS_API_KEY === 'AIzaSyAoS15xiN1TTWmkeT-oz95e7kmULnbt_cE') {
       console.error('⚠️ Google Maps API Key not configured!');
       setQuotaWarning(true);
       return;
