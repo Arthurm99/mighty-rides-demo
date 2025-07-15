@@ -239,8 +239,8 @@ export default function Book() {
     }
   }, [driverId, formData.date, formData.time, formData.fromPlaceId, formData.toPlaceId]);
 
-  // Configuración de precios
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  
+
   // Configuración de precios
   const priceConfig = {
     baseFare: 3.50,
@@ -319,8 +319,15 @@ export default function Book() {
       return;
     }
 
-    const existingScript = document.querySelector(`script[src*="maps.googleapis.com"]`);
+const existingScript = document.querySelector(`script[src*="maps.googleapis.com"]`);
     if (existingScript) {
+      // Verificar inmediatamente si Google ya está disponible
+      if (window.google && window.google.maps && window.google.maps.places) {
+        setIsGoogleLoaded(true);
+        return;
+      }
+      
+      // Si no está listo, esperar con intervalo
       const checkInterval = setInterval(() => {
         if (window.google && window.google.maps && window.google.maps.places) {
           setIsGoogleLoaded(true);
